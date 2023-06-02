@@ -59,7 +59,13 @@ stages:
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       displayName: 'Upload package'
       artifact: drop
-
+- script: |
+    python -m venv antenv
+    source antenv/bin/activate
+    make install
+    make lint
+  workingDirectory: $(projectRoot)
+  displayName: 'Run lint tests'
 - stage: Deploy
   displayName: 'Deploy Web App'
   dependsOn: Build
